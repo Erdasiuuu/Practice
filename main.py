@@ -8,13 +8,18 @@ from tkinter import filedialog, ttk
 class ImageEditor:
     def __init__(self):
         self.root = None
-        self.window = None
-        self.image_frame = None
-        self.window = None
         self.image = None
-        self.crop_frame = None
-        self.crop_frame_fields = None
+        self.frame = self.Frames()
         self.show_welcome_window()
+
+    class Frames:
+        def __init__(self):
+            self.crop_frame = None
+            self.crop_frame_fields = None
+            self.brightness_frame = None
+            self.brightness_frame_fields = None
+            self.draw_line_frame = None
+            self.draw_line_frame_fields = None
 
 
     def show_welcome_window(self):
@@ -64,16 +69,18 @@ class ImageEditor:
         label = tk.Label(self.root, image=self.image)
         label.pack()
 
-        tk.Button(self.crop_frame, text="Обрезать изображение", command=self.toggle_crop_frame).pack()
-        self.crop_frame.pack(fill=tk.BOTH)
+        crop_image = "Обрезать изображение"
+        tk.Button(self.frame.crop_frame, text=crop_image, command=lambda: toggle_frame(self.frame.crop_frame_fields, crop_image)).pack()
+        self.frame.crop_frame.pack(fill=tk.BOTH)
+
+
         tk.Button(self.root, text="Новое изображение", command=self.show_welcome_window).pack()
         tk.Button(self.root, text="Выйти", command=self.root.destroy).pack()
 
 
-    def toggle_crop_frame(self):
-        """Показать или скрыть фрейм для ввода координат обрезки"""
-        if self.crop_frame_fields is None:
-            self.crop_frame_fields = tk.Frame(self.crop_frame)
+    def toggle_frame(frame, text):
+        if frame is None:
+            self.frame.crop_frame_fields = tk.Frame(self.crop_frame)
             tk.Label(self.crop_frame_fields, text="Координаты обрезки").pack()
             tk.Label(self.crop_frame_fields, text="Левая:").pack()
             tk.Entry(self.crop_frame_fields).pack()
@@ -84,27 +91,12 @@ class ImageEditor:
             tk.Label(self.crop_frame_fields, text="Нижняя:").pack()
             tk.Entry(self.crop_frame_fields).pack()
             self.crop_frame_fields.pack(fill=tk.BOTH)
+        elif frame.winfo_ismapped():
+            frame.pack_forget()
         else:
-            self.crop_frame_fields.destroy()
-            self.crop_frame_fields = None
+            frame.pack()
         
         
-
-    def show_crop_window(self):
-        tk.Label(self.window, text="Координаты обрезки").pack()
-        tk.Label(self.window, text="Левая:").pack()
-        entry_left = tk.Entry(self.window)
-        entry_left.pack()
-        tk.Label(self.window, text="Верхняя:").pack()
-        entry_top = tk.Entry(self.window)
-        entry_top.pack()
-        tk.Label(self.window, text="Правая:").pack()
-        entry_right = tk.Entry(self.window)
-        entry_right.pack()
-        tk.Label(self.window, text="Нижняя:").pack()
-        entry_bottom = tk.Entry(self.window)
-        entry_bottom.pack()
-
 
     def clear_window(self):
         for widget in self.root.winfo_children():
