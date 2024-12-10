@@ -70,7 +70,7 @@ class ImageEditor:
         label.pack()
 
         crop_image = "Обрезать изображение"
-        tk.Button(self.frame.crop_frame, text=crop_image, command=lambda: toggle_frame(self.frame.crop_frame_fields, crop_image)).pack()
+        tk.Button(self.frame.crop_frame, text=crop_image, command=lambda: ImageEditor.toggle_frame(self.frame.crop_frame_fields, crop_image)).pack()
         self.frame.crop_frame.pack(fill=tk.BOTH)
 
 
@@ -80,17 +80,10 @@ class ImageEditor:
 
     def toggle_frame(frame, text):
         if frame is None:
-            self.frame.crop_frame_fields = tk.Frame(self.crop_frame)
-            tk.Label(self.crop_frame_fields, text="Координаты обрезки").pack()
-            tk.Label(self.crop_frame_fields, text="Левая:").pack()
-            tk.Entry(self.crop_frame_fields).pack()
-            tk.Label(self.crop_frame_fields, text="Верхняя:").pack()
-            tk.Entry(self.crop_frame_fields).pack()
-            tk.Label(self.crop_frame_fields, text="Правая:").pack()
-            tk.Entry(self.crop_frame_fields).pack()
-            tk.Label(self.crop_frame_fields, text="Нижняя:").pack()
-            tk.Entry(self.crop_frame_fields).pack()
-            self.crop_frame_fields.pack(fill=tk.BOTH)
+            self.frame.crop_frame_fields = tk.Frame(self.frame.crop_frame)
+            tk.Label(self.frame.crop_frame_fields, text="Координаты обрезки").pack()
+            self.frame.crop_frame_fields.pack(fill=tk.BOTH)
+            print(frame, text)
         elif frame.winfo_ismapped():
             frame.pack_forget()
         else:
