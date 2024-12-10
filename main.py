@@ -8,9 +8,10 @@ from tkinter import filedialog, ttk
 class ImageEditor:
     def __init__(self):
         self.root = None
-        self.image = None
+        self.image_label = None
         self.frame = self.Frames()
         self.show_welcome_window()
+        self.x = False
 
     class Frames:
         def __init__(self):
@@ -25,7 +26,7 @@ class ImageEditor:
     def show_welcome_window(self):
         if self.root is None:
             self.root = tk.Tk()
-            self.crop_frame = tk.Frame(self.root)
+            self.frame.crop_frame = tk.Frame(self.root)
         else:
             self.clear_window()
 
@@ -64,26 +65,26 @@ class ImageEditor:
         self.clear_window()
         self.root.title("Просмотр изображения")
         
-        self.image = ImageTk.PhotoImage(photo)
-        
-        label = tk.Label(self.root, image=self.image)
-        label.pack()
+        image = ImageTk.PhotoImage(photo)
+        self.image_label = tk.Label(self.root, image=image)
+        self.image_label.pack()
 
+        self.frame.crop_frame = tk.Frame(self.root)
         crop_image = "Обрезать изображение"
-        tk.Button(self.frame.crop_frame, text=crop_image, command=lambda: ImageEditor.toggle_frame(self.frame.crop_frame_fields, crop_image)).pack()
+        crop_function = lambda: self.toggle_frame(self.frame.crop_frame_fields, crop_image)
+        tk.Button(self.frame.crop_frame, text=crop_image, command=crop_function).pack()
         self.frame.crop_frame.pack(fill=tk.BOTH)
 
 
         tk.Button(self.root, text="Новое изображение", command=self.show_welcome_window).pack()
         tk.Button(self.root, text="Выйти", command=self.root.destroy).pack()
 
-
-    def toggle_frame(frame, text):
+        
+    def toggle_frame(self, frame, text):
         if frame is None:
             self.frame.crop_frame_fields = tk.Frame(self.frame.crop_frame)
             tk.Label(self.frame.crop_frame_fields, text="Координаты обрезки").pack()
             self.frame.crop_frame_fields.pack(fill=tk.BOTH)
-            print(frame, text)
         elif frame.winfo_ismapped():
             frame.pack_forget()
         else:
@@ -94,7 +95,6 @@ class ImageEditor:
     def clear_window(self):
         for widget in self.root.winfo_children():
             widget.destroy()
-        self.crop_frame = tk.Frame(self.root)
 
 
 if __name__ == '__main__':
