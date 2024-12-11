@@ -63,12 +63,11 @@ class ImageEditor:
             self.image = ImageTk.PhotoImage(photo)
             self.image_label = tk.Label(self.frame.main_frame, image=self.image)
             self.image_label.pack()
-            print(1)
             self.frame.crop_frame = tk.Frame(self.frame.main_frame)
             crop_image = "Обрезать изображение"
             crop_function = lambda: self.toggle_frame(self.frame.crop_frame, crop_image)
-            tk.Button(self.frame.crop_frame, text=crop_image, command=crop_function).pack()
-            self.frame.crop_frame.pack(fill=tk.BOTH)
+            tk.Button(self.frame.crop_frame, text=crop_image, command=self.create_crop_frame).pack()
+            self.frame.crop_frame.pack()
 
             '''
             self.frame.brightness_frame = tk.Frame(self.root)
@@ -85,25 +84,23 @@ class ImageEditor:
             '''
             tk.Button(self.frame.main_frame, text="Новое изображение", command=self.create_welcome_frame).pack()
             tk.Button(self.frame.main_frame, text="Выйти", command=self.root.destroy).pack()
+        else:
+            self.image = ImageTk.PhotoImage(photo)
+            self.image_label.config(image=self.image)
 
         self.frame.main_frame.pack(fill=tk.BOTH)
         self.frame.main_window.pack(fill=tk.BOTH)
 
         
     def toggle_frame(self, frame, text):
-        if frame is None:
-            if text == "Загрузка изображения":
-                self.create_welcome_frame()
-            elif text == "Обрезать изображение":
-                self.create_crop_frame()
-            elif text == "Повысить яркость изображения":
-                self.create_brightness_frame()
-            elif text == "Нарисовать линию":
-                self.create_draw_line_frame()
-        elif frame.winfo_ismapped():
-            frame.pack_forget()
-        else:
-            frame.pack()
+        if text == "Загрузка изображения":
+            self.create_welcome_frame()
+        elif text == "Обрезать изображение":
+            self.create_crop_frame()
+        elif text == "Повысить яркость изображения":
+            self.create_brightness_frame()
+        elif text == "Нарисовать линию":
+            self.create_draw_line_frame()
         
 
     def create_welcome_frame(self):
@@ -123,9 +120,9 @@ class ImageEditor:
         self.frame.welcome_window.pack()
 
     def create_crop_frame(self):
-        self.frame.crop_frame = tk.Frame(self.frame.main_window)
+        self.frame.crop_frame = tk.Frame(self.frame.main_frame)
         tk.Label(self.frame.crop_frame, text="Координаты обрезки").pack()
-        self.frame.crop_frame.pack(fill=tk.BOTH)
+        self.frame.crop_frame.pack()
         
     def create_brightness_frame(self):
         self.frame.brightness_frame_fields = tk.Frame(self.frame.brightness_frame)
