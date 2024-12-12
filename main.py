@@ -60,13 +60,12 @@ class ImageEditor:
         if self.frame.main_frame is None:
             self.frame.main_frame = tk.Frame(self.frame.main_window)
         
-            self.image = ImageTk.PhotoImage(photo)
-            self.image_label = tk.Label(self.frame.main_frame, image=self.image)
-            self.image_label.pack()
+            self.set_image(photo)
+
             self.frame.crop_frame = tk.Frame(self.frame.main_frame)
             crop_image = "Обрезать изображение"
-            crop_function = lambda: self.toggle_frame(self.frame.crop_frame, crop_image)
-            tk.Button(self.frame.crop_frame, text=crop_image, command=self.create_crop_frame).pack()
+            crop_function = lambda: self.toggle_frame(self.frame.crop_frame_fields, crop_image)
+            tk.Button(self.frame.crop_frame, text=crop_image, command=crop_function).pack()
             self.frame.crop_frame.pack()
 
             '''
@@ -85,27 +84,36 @@ class ImageEditor:
             tk.Button(self.frame.main_frame, text="Новое изображение", command=self.create_welcome_frame).pack()
             tk.Button(self.frame.main_frame, text="Выйти", command=self.root.destroy).pack()
         else:
-            self.image = ImageTk.PhotoImage(photo)
-            self.image_label.config(image=self.image)
+            self.frame.crop_frame_fields.pack_forget()
+            self.set_image(photo)
 
-        self.frame.main_frame.pack(fill=tk.BOTH)
-        self.frame.main_window.pack(fill=tk.BOTH)
+        self.frame.main_frame.pack()
+        self.frame.main_window.pack()
 
         
     def toggle_frame(self, frame, text):
-        if text == "Загрузка изображения":
-            self.create_welcome_frame()
-        elif text == "Обрезать изображение":
-            self.create_crop_frame()
-        elif text == "Повысить яркость изображения":
-            self.create_brightness_frame()
-        elif text == "Нарисовать линию":
-            self.create_draw_line_frame()
+        if frame is None:
+            if text == "Загрузка изображения":
+                self.create_welcome_frame()
+            elif text == "Обрезать изображение":
+                self.create_crop_frame()
+            elif text == "Повысить яркость изображения":
+                self.create_brightness_frame()
+            elif text == "Нарисовать линию":
+                self.create_draw_line_frame()
+        elif frame.winfo_ismapped():
+            for widget in frame.winfo_children():
+                widget.pack_forget()
+            frame.pack_forget()
+        else:
+            for widget in frame.winfo_children():
+                widget.pack()
+            frame.pack()
         
 
     def create_welcome_frame(self):
         self.root.title("Загрузка изображения")
-        self.root.minsize(300, 50)
+        self.root.resizable(False, False)
 
         if self.frame.welcome_frame is None:
             self.frame.welcome_frame = tk.Frame(self.frame.welcome_window)
@@ -120,9 +128,10 @@ class ImageEditor:
         self.frame.welcome_window.pack()
 
     def create_crop_frame(self):
-        self.frame.crop_frame = tk.Frame(self.frame.main_frame)
-        tk.Label(self.frame.crop_frame, text="Координаты обрезки").pack()
-        self.frame.crop_frame.pack()
+        self.frame.crop_frame_fields = tk.Frame(self.frame.crop_frame)
+        tk.Label(self.frame.crop_frame_fields, text="Координаты обрезки").pack()
+        tk.Button(self.frame.crop_frame_fields, text='hihi', command=self.crop).pack()
+        self.frame.crop_frame_fields.pack()
         
     def create_brightness_frame(self):
         self.frame.brightness_frame_fields = tk.Frame(self.frame.brightness_frame)
@@ -135,9 +144,22 @@ class ImageEditor:
         self.frame.draw_line_frame_fields.pack(fill=tk.BOTH)
         
 
-    def clear_window(self):
-        for widget in self.root.winfo_children():
-            widget.destroy()
+    def crop(self):
+        self.image = self.image.crop((10, 20, 300, 400))
+        self.set_image()
+
+
+    def set_image(self, photo=None):
+        if photo is not None:
+            self.image = photo
+        tk_image = ImageTk.PhotoImage(self.image)
+        if self.image_label is None:
+            self.image_label = tk.Label(self.frame.main_frame, image=tk_image)
+            self.image_label.image = tk_image
+        else:
+            self.image_label.image = tk_image
+            self.image_label.config(image=tk_image)
+        self.image_label.pack(side=tk.RIGHT)
 
 
 if __name__ == '__main__':
