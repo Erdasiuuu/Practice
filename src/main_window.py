@@ -1,5 +1,5 @@
-from PIL import Image, ImageTk
 import tkinter as tk
+from PIL import ImageTk
 from crop import Crop
 from brightness import Brightness
 from draw_line import DrawLine
@@ -84,7 +84,7 @@ class MainWindow:
         ).pack()
 
     def show(self):
-        self.frames["main"].pack() 
+        self.frames["main"].pack()
         self.set_image()
         self.frames["crop"].pack()
         self.frames["brightness"].pack()

@@ -1,5 +1,5 @@
-from PIL import ImageDraw
 import tkinter as tk
+from PIL import ImageDraw
 
 class DrawLine:
     def __init__(self, master, image, set_image):
@@ -98,4 +98,3 @@ class DrawLine:
             self.set_image()
         except Exception as e:
             print(e)
-

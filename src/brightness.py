@@ -1,5 +1,5 @@
-from PIL import ImageEnhance
 import tkinter as tk
+from PIL import ImageEnhance
 
 class Brightness:
     def __init__(self, master, image, set_image):

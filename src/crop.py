@@ -86,4 +86,3 @@ class Crop:
             self.set_image()
         except Exception as e:
             print(e)
-

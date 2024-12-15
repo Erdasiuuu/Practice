@@ -3,7 +3,7 @@ from PIL import Image
 import cv2
 
 class ImageHandler:
-    def load_image(image):
+    def load_image(image: list):
         file_path = filedialog.askopenfilename(
             title="Выберите изображение",
             filetypes=[("Изображения", "*.png *.jpg")],
@@ -11,7 +11,7 @@ class ImageHandler:
         if file_path:
             image[0] = Image.open(file_path)
 
-    def capture_from_camera(image):
+    def capture_from_camera(image: list):
         cap = cv2.VideoCapture(0)
         ret, frame = cap.read()
         cap.release()
