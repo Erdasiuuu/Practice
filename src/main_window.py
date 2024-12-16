@@ -3,6 +3,7 @@ from PIL import ImageTk
 from crop import Crop
 from brightness import Brightness
 from draw_line import DrawLine
+from color_channels import ColorChannels
 
 
 class MainWindow:
@@ -35,6 +36,7 @@ class MainWindow:
         self.frames["crop"] = tk.Frame(main_frame)
         self.frames["brightness"] = tk.Frame(main_frame)
         self.frames["draw_line"] = tk.Frame(main_frame)
+        self.frames["channels"] = tk.Frame(main_frame)
 
     def create_interaction_classes(self):
         self.interaction_classes["crop"] = Crop(
@@ -51,6 +53,11 @@ class MainWindow:
                                                     self.frames["draw_line"],
                                                     self.image,
                                                     self.set_image)
+
+        self.interaction_classes["channels"] = ColorChannels(
+                                                        self.frames["channels"],
+                                                        self.image,
+                                                        self.set_image)
 
     def create_fields(self):
         tk.Button(
@@ -71,6 +78,27 @@ class MainWindow:
                 command=self.interaction_classes["draw_line"].toggle_frame
         ).pack()
 
+        red = lambda: self.interaction_classes["channels"].get_channel("red")
+        tk.Button(
+                self.frames["channels"],
+                text="Красный канал",
+                command=red
+        ).pack()
+
+        green = lambda: self.interaction_classes["channels"].get_channel("green")
+        tk.Button(
+                self.frames["channels"],
+                text="Зеленый канал",
+                command=green
+        ).pack()
+
+        blue = lambda: self.interaction_classes["channels"].get_channel("blue")
+        tk.Button(
+                self.frames["channels"],
+                text="Синий канал",
+                command=blue
+        ).pack()
+
         tk.Button(
                 self.frames["info"],
                 text="Новое изображение",
@@ -89,6 +117,7 @@ class MainWindow:
         self.frames["crop"].pack()
         self.frames["brightness"].pack()
         self.frames["draw_line"].pack()
+        self.frames["channels"].pack()
         self.frames["info"].pack()
 
     def hide(self):
