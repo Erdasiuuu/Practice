@@ -1,16 +1,16 @@
 #!/bin/bash
 
-VENV_DIR="OzPr"
+ENV_NAME="env_practice"
 if [[ $# -eq 1 ]]; then
-    VENV_DIR="$1"
+    ENV_NAME="$1"
 fi
 
-if [ ! -d "$VENV_DIR" ]; then
+if [ -z "$(conda env list | grep -w "$ENV_NAME")" ]; then
     echo "Создание виртуального окружения: $VENV_DIR"
-    virtualenv $VENV_DIR > /dev/null
-    source $VENV_DIR/bin/activate
-    pip install -r requirements.txt > /dev/null
-elif [[ "$VIRTUAL_ENV" != *"/$VENV_DIR"* && -f "$VENV_DIR/bin/activate" ]]; then
+    conda create -n $ENV_NAME python=3.10 anaconda
+    conda activate $ENV_NAME
+    pip install -r requirements.txt
+elif [[ "$CONDA_DEFAULT_ENV" != "$ENV_NAME" ]]; then
     echo "Активация виртуального окружения"
-    source $VENV_DIR/bin/activate
+    conda activate $ENV_NAME
 fi
