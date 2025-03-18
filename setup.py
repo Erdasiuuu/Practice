@@ -7,11 +7,13 @@ def read_requirements():
 setup(
     name="SnapEditor",
     version="1.0.0",
-    packages=find_packages(),
+    packages=find_packages(where='src'),
+    package_dir={'': 'src'},
     install_requires=read_requirements(),
     entry_points={
         "console_scripts": [
-            "SnapEditor=src.main:main",
+            "SnapEditor=SnapEditor.__main__:main",
         ],
-    }
+    },
+    python_requires=">=3.9",
 )
