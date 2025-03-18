@@ -1,9 +1,9 @@
 import tkinter as tk
 from PIL import ImageTk
-from crop import Crop
-from brightness import Brightness
-from draw_line import DrawLine
-from color_channels import ColorChannels
+from .crop import Crop
+from .brightness import Brightness
+from .draw_line import DrawLine
+from .color_channels import ColorChannels
 
 
 class MainWindow:

@@ -1,4 +1,4 @@
-from window_manager import WindowManager
+from .window_manager import WindowManager
 
 class App:
     def __init__(self, root):

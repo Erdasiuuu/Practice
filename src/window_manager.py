@@ -1,5 +1,5 @@
-from welcome_window import WelcomeWindow
-from main_window import MainWindow
+from .welcome_window import WelcomeWindow
+from .main_window import MainWindow
 
 class WindowManager:
     def __init__(self, root):

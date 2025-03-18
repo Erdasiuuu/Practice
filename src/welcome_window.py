@@ -1,5 +1,5 @@
 import tkinter as tk
-from image_handler import ImageHandler
+from .image_handler import ImageHandler
 
 class WelcomeWindow:
     def __init__(self, master, image, switch_callback):
